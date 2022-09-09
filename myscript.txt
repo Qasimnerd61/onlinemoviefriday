@@ -1,0 +1,140 @@
+drop table [dbo].[tblUsers]
+
+CREATE TABLE [dbo].[tblUsers](
+	[CustomerID] [int] IDENTITY(1,1) Primary key NOT NULL,
+	[firstname] [varchar](100) NOT NULL,
+	[lastname] [varchar](100) NOT NULL,
+	[username] [varchar](50) NOT NULL,
+	[email] [varchar](100) NOT NULL,
+	[phonenumber] float NOT NULL,
+	[age] [int] NOT NULL,
+	[gender] [varchar](50),
+	[password] [varchar](50),
+	[usertypeid] [int]
+	)
+
+select * from tblUsers
+delete from tblUsers where CustomerID=9
+
+create proc users @firstname varchar(100),@lastname varchar(100),@email varchar(100), @cellnum float,@age int, @gender varchar(50), @username varchar(50), @password varchar(50), @usertypeid int
+as
+begin
+INSERT INTO tblUsers
+                        (firstname,
+                         lastname,
+                         email,
+                         phonenumber,
+						 age,
+						 gender,
+						 username,
+						 password,
+						 usertypeid)
+            VALUES     ( @firstname,
+                         @lastname,
+                         @email,
+                         @cellnum,
+						 @age,
+						 @gender,
+						 @username,
+						 @password,
+						 @usertypeid)
+						 end
+
+
+drop proc users
+
+update tblUsers
+set usertypeid=0
+ where CustomerID=1
+
+
+
+CREATE TABLE [dbo].[tblBillHeader](
+	[BillId] [int] IDENTITY(1,1) NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[purchaseDate] [date] NOT NULL,
+
+ALTER TABLE [dbo].[tblBillHeader] ADD  DEFAULT (getdate()) FOR [purchaseDate]
+GO
+
+ALTER TABLE [dbo].[tblBillHeader]  WITH CHECK ADD FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[tblUsers] ([UserId])
+GO
+
+
+
+
+
+CREATE TABLE [dbo].[tblBillDetail](
+	[BillId] [int] NOT NULL,
+	[moviesId] [int] NOT NULL,
+	[Price] [decimal](18, 0) NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tblBillDetail]  WITH CHECK ADD FOREIGN KEY([BillId])
+REFERENCES [dbo].[tblBillHeader] ([BillId])
+GO
+
+ALTER TABLE [dbo].[tblBillDetail]  WITH CHECK ADD FOREIGN KEY([moviesId])
+REFERENCES [dbo].[tblMovies] ([moviesId])
+GO
+
+
+
+
+
+CREATE TABLE [dbo].[tblCart](
+	[cartId] [int] IDENTITY(1,1) NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[moviesId] [int] NOT NULL,
+ALTER TABLE [dbo].[tblCart]  WITH CHECK ADD FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[tblUsers] ([UserId])
+GO
+
+ALTER TABLE [dbo].[tblCart]  WITH CHECK ADD FOREIGN KEY([moviesId])
+REFERENCES [dbo].[tblMovies] ([moviesId])
+GO
+
+
+
+CREATE TABLE [dbo].[tblgenres](
+	[genresId] [int] IDENTITY(1,1) NOT NULL,
+	[genresName] [varchar](100) NOT NULL,
+
+
+CREATE TABLE [dbo].[tblMovies](
+	[moviesId] [int] IDENTITY(1,1) NOT NULL,
+	[name] [varchar](100) NOT NULL,
+	[description] [varchar](500) NOT NULL,
+	[price] [decimal](18, 0) NOT NULL,
+	[pictureUrl] [varchar](max) NOT NULL,
+
+
+
+
+CREATE TABLE [dbo].[tblmoviesgenres](
+	[moviesgenresId] [int] IDENTITY(1,1) NOT NULL,
+	[moviesId] [int] NOT NULL,
+	[genresId] [int] NOT NULL,
+
+
+
+CREATE TABLE [dbo].[tblUsers](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[Username] [nvarchar](100) NOT NULL,
+	[Password] [nvarchar](100) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Email] [nvarchar](50) NOT NULL,
+	[PhoneNumber] [nvarchar](50) NOT NULL,
+	[UserType] [bit] NOT NULL,
+
+
+
+
+
+
+
+
+
+
